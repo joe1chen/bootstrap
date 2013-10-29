@@ -74,7 +74,8 @@ angular.module('ui.bootstrap.pagination', [])
   previousText: 'Previous',
   nextText: 'Next',
   lastText: 'Last',
-  rotate: true
+  rotate: true,
+  pageSetLinks: true
 })
 
 .directive('pagination', ['$parse', 'paginationConfig', function($parse, config) {
@@ -99,7 +100,8 @@ angular.module('ui.bootstrap.pagination', [])
       previousText   = paginationCtrl.getAttributeValue(attrs.previousText,   config.previousText,  true),
       nextText       = paginationCtrl.getAttributeValue(attrs.nextText,       config.nextText,      true),
       lastText       = paginationCtrl.getAttributeValue(attrs.lastText,       config.lastText,      true),
-      rotate         = paginationCtrl.getAttributeValue(attrs.rotate,         config.rotate);
+      rotate         = paginationCtrl.getAttributeValue(attrs.rotate,         config.rotate),
+      pageSetLinks   = paginationCtrl.getAttributeValue(attrs.pageSetLinks,   config.pageSetLinks);
 
       paginationCtrl.init(config.itemsPerPage);
 
@@ -155,15 +157,17 @@ angular.module('ui.bootstrap.pagination', [])
         }
 
         // Add links to move between page sets
-        if ( isMaxSized && ! rotate ) {
-          if ( startPage > 1 ) {
-            var previousPageSet = makePage(startPage - 1, '...', false, false);
-            pages.unshift(previousPageSet);
-          }
+        if (pageSetLinks) {
+          if ( isMaxSized && ! rotate ) {
+            if ( startPage > 1 ) {
+              var previousPageSet = makePage(startPage - 1, '...', false, false);
+              pages.unshift(previousPageSet);
+            }
 
-          if ( endPage < totalPages ) {
-            var nextPageSet = makePage(endPage + 1, '...', false, false);
-            pages.push(nextPageSet);
+            if ( endPage < totalPages ) {
+              var nextPageSet = makePage(endPage + 1, '...', false, false);
+              pages.push(nextPageSet);
+            }
           }
         }
 
